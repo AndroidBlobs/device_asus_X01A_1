@@ -162,6 +162,8 @@ on post-fs-data
     restorecon_recursive /ADF
     restorecon_recursive /asusfw
 
+    chown root system /factory
+
     chmod 0666  /proc/aging_power_test/Charging_ChargeState
     chmod 0666 	/proc/aging_power_test/Charging_DemoApp_ChargeState
 
@@ -264,6 +266,19 @@ service time_daemon /system/vendor/bin/time_daemon
    user root
    group root
 
+#cmadd
+service battery_fac_cls /vendor/bin/battery-fac-cls.sh
+   class main
+   user root
+   group root
+   oneshot
+   disabled
+   seclabel u:r:vendor_init:s0
+
+#add for battery health 20190523
+on property:dbg.battery.changed=1
+   start battery_fac_cls
+#cmadd
 service audiod /system/vendor/bin/audiod
    class late_start
    user system

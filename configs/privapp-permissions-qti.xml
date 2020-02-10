@@ -215,5 +215,7 @@ It allows additional grants on top of privapp-permissions-platform.xml
     </privapp-permissions>
     <!-- archermind add by wangwei for cts fail on 20190304 end-->
 
-
+    <privapp-permissions package="com.asus.sysmonitor">
+        <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE"/>
+    </privapp-permissions>
 </permissions>

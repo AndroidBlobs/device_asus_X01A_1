@@ -1285,3 +1285,33 @@ service copyanr /system/bin/sh /system/etc/copyanr.sh
     seclabel u:r:dumpstate:s0
 on property:persist.asus.copyanr=1
     start copyanr
+#add for triger save btmac and wifimac start
+	
+service nvram_btwifi /vendor/bin/nvram_btwifi
+	
+    user root
+	
+    group system
+	
+    chmod 0644 /vendor/bin/nvram_btwifi
+	
+    oneshot
+	
+    disabled
+	
+    seclabel u:r:vendor_init:s0
+	
+	
+on property:sys.boot_completed=1
+	
+    start nvram_btwifi
+	
+on property:sys.nvram.btmac=*
+	
+    setprop ro.btmac ${sys.nvram.btmac}
+	
+on property:sys.nvram.wifimac=*
+	
+    setprop ro.wifimac ${sys.nvram.wifimac}
+	
+#add for triger save btmac and wifimac end

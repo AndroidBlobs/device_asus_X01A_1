@@ -32,6 +32,7 @@ PRODUCT_PROPERTY_OVERRIDES +=  \
     persist.vendor.radio.sib16_support=1 \
     rild.libpath=/vendor/lib64/libril-qc-qmi-1.so \
     ro.af.client_heap_size_kbyte=7168 \
+    ro.build.servaddr=2 \
     ro.carrier=unknown \
     ro.com.android.dataroaming=false \
     ro.com.google.clientidbase.ms=android-asus-tpin \

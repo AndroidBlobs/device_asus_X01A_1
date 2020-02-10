@@ -2,7 +2,7 @@ DEVICE_PATH := device/asus/X01A_1
 BOARD_VENDOR := asus
 
 # Security patch level
-VENDOR_SECURITY_PATCH := 2019-10-05
+VENDOR_SECURITY_PATCH := 2019-12-05
 
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml

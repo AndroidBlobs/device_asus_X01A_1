@@ -1,0 +1,127 @@
+#this file is for DFX use only
+#Huaqin modiy for log sepolicy to system by zhangjingzhi at 20180306 start
+# Huaqin midify hwdiag selinux by zhangjingzhi at 20180211 For bsp/rom start
+service hwdiag /system/bin/hwdiag
+    class core
+    user root
+    group root
+
+on boot
+    start hwdiag
+# Huaqin midify hwdiag selinux by zhangjingzhi at 20180211 For bsp/rom start
+
+#Huaqin add class core for getaplog by miaozhenxing at 20180809 start
+service  getaplog /system/bin/getlog -c
+    class core
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+service  stopaplog /system/bin/getlog -s
+    class core
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+on property:persist.sys.debug.getaplog=1
+    restart getaplog
+on property:persist.sys.debug.getaplog=0
+    start stopaplog
+#Huaqin add class core for getaplog by miaozhenxing at 20180809 end
+
+service  getqxdmlog /system/bin/getlog -q
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+service  stopqxdmlog /system/bin/getlog -x
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+on property:persist.sys.debug.getqxdmlog=1
+    restart getqxdmlog
+on property:persist.sys.debug.getqxdmlog=0
+    start stopqxdmlog
+
+
+#Huaqin modiy to getqxdm when test smart_pa by zhangjingzhi at 20180312 start
+on property:sys.debug.getqxdmlog=1
+    restart getqxdmlog
+on property:sys.debug.getqxdmlog=0
+    start stopqxdmlog
+#Huaqin modiy to getqxdm when test smart_pa by zhangjingzhi at 20180312 end
+
+service  cpanrlog  /vendor/bin/sh /vendor/etc/cpanrlog.sh
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+service  cptomblog  /vendor/bin/sh /vendor/etc/cptomblog.sh
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+service  gettcpdumplog /system/bin/getlog -t
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+
+service  stoptcpdumplog /system/bin/getlog -p
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+#huaqin modify to fix getlog auto start  by zhangjingzhi at 20181012 for bsp/rom start
+service  getpersistlog /system/bin/getpersistlog
+    disabled
+    class main
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+#huaqin modify to fix getlog auto start  by zhangjingzhi at 20181012 for bsp/rom end
+
+on property:persist.sys.debug.gettcpdump=1
+    restart gettcpdumplog
+on property:persist.sys.debug.gettcpdump=0
+    start stoptcpdumplog
+
+service getalllog /vendor/bin/sh /vendor/etc/getalllog.sh
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+on property:persist.sys.debug.getalllog=1
+    restart getalllog
+on property:persist.sys.debug.getalllog=0
+    stop getalllog
+
+service nvram_btwifi /vendor/bin/nvram_btwifi
+    user root
+    group system
+    chmod 0644 /vendor/bin/nvram_btwifi
+    oneshot
+    disabled
+
+on property:sys.boot_completed=1
+    start nvram_btwifi
+on property:sys.nvram.btmac=*
+    setprop ro.btmac ${sys.nvram.btmac}
+on property:sys.nvram.wifimac=*
+    setprop ro.wifimac ${sys.nvram.wifimac}
+
+
+#Huaqin modify for enable diag by zhangjingzhi at 20180817 for rom start
+on property:gsm.diag.enable=1
+    setprop sys.diag.enable 1
+on property:sys.diag.enable=1
+    setprop sys.usb.config ${ro.usb.firstboot.config}
+
+#Huaqin modify for enable diag by zhangjingzhi at 20180817 for rom end

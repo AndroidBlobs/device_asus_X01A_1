@@ -1,0 +1,11 @@
+#this file is for DFX only
+#Huaqin add for delete log by zhangjingzhi at 20181026 start
+service  deletelog /system/bin/deletelog
+    disabled
+    user root
+    oneshot
+    seclabel u:r:logoem:s0
+on property:persist.asus.savelogs=0
+start deletelog
+#Huaqin add for delete log by zhangjingzhi at 20181026 end
+
